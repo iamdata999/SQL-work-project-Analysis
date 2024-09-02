@@ -1,0 +1,8 @@
+SELECT
+name
+FROM
+company_dim
+WHERE
+name LIKE '%Tech_'
+ORDER BY
+name ASC;

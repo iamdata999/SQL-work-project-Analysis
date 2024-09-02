@@ -1,0 +1,9 @@
+SELECT
+job_id,
+job_title
+FROM
+job_postings_fact
+WHERE
+job_title LIKE '%a_a%'
+ORDER BY
+job_id ASC;
