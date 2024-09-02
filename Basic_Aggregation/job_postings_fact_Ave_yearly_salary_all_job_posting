@@ -1,0 +1,8 @@
+SELECT 
+    SUM(salary_year_avg) / COUNT(salary_year_avg) AS avg_yearly_salary_fully_remote
+FROM 
+    job_postings_fact
+WHERE 
+    job_work_from_home = 'true' 
+    AND salary_year_avg IS NOT NULL;
+    

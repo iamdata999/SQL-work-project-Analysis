@@ -1,0 +1,6 @@
+SELECT
+COUNT(*) AS total_job_postings_with_health_insurance
+FROM
+job_postings_fact
+WHERE
+job_health_insurance = TRUE;

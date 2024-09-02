@@ -1,0 +1,8 @@
+SELECT 
+    AVG(salary_year_avg) AS avg_yearly_salary
+FROM 
+    job_postings_fact
+WHERE 
+    job_title_short = 'Data Scientist' 
+    AND salary_year_avg IS NOT NULL;
+
