@@ -1,0 +1,19 @@
+SELECT
+jp.job_id,
+jp.job_title,
+sd.skill_id AS skills
+FROM
+job_postings_fact jp
+LEFT JOIN
+skills_job_dim sj
+ON
+jp.job_id = sj.job_id
+LEFT JOIN
+skills_dim sd
+ON
+sj.skill_id = sd.skill_id
+WHERE
+jp.job_location = 'New York'
+AND jp.job_health_insurance = TRUE
+ORDER BY
+jp.job_id DESC;

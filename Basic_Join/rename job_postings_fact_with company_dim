@@ -1,0 +1,16 @@
+SELECT
+jp.job_id,
+jp.job_title,
+jp.job_location,
+jp.job_posted_date,
+c.name AS company_name
+FROM
+job_postings_fact AS jp
+INNER JOIN
+company_dim AS c
+ON
+jp.company_id = c.company_id
+WHERE
+jp.job_title_short = 'Data Scientist'
+ORDER BY
+jp.job_posted_date DESC;

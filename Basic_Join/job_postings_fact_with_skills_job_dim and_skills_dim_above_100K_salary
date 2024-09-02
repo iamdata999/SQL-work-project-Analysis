@@ -1,0 +1,11 @@
+SELECT sd.skills AS skills, COUNT(*) AS job_posting_count
+FROM job_postings_fact jpf
+INNER JOIN skills_job_dim sjd ON jpf.job_id = sjd.job_id
+INNER JOIN skills_dim sd ON sjd.skill_id = sd.skill_id
+WHERE jpf.job_work_from_home = 'Yes'
+  AND jpf.salary_year_avg > 100000
+GROUP BY sd.skills
+ORDER BY job_posting_count DESC;
+
+
+
