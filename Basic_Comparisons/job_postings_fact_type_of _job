@@ -1,0 +1,13 @@
+SELECT
+job_id,
+job_title_short,
+job_location,
+job_via,
+salary_year_avg,
+job_schedule_type
+FROM
+job_postings_fact
+WHERE
+job_schedule_type IN ('Full-Time', 'Contractor')
+ORDER BY
+job_id ASC;

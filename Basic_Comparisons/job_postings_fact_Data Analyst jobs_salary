@@ -1,0 +1,12 @@
+SELECT
+job_id,
+job_title_short,
+job_location,
+salary_year_avg
+FROM
+job_postings_fact
+WHERE
+job_title_short = 'Data Analyst'
+AND salary_year_avg BETWEEN 50000 AND 75000
+ORDER BY
+job_id ASC;
