@@ -1,0 +1,45 @@
+WITH senior_level_jobs AS (
+    SELECT
+        c.company_id,
+        c.name AS company_name,
+        j.job_id,
+        j.job_title,
+        j.salary_year_avg
+    FROM
+        company_dim c
+    JOIN
+        job_postings_fact j ON c.company_id = j.company_id
+    WHERE
+        (j.job_title ILIKE '%Senior%' 
+        OR j.job_title ILIKE '%Lead%' 
+        OR j.job_title ILIKE '%Principal%')
+        AND j.salary_year_avg IS NOT NULL
+),
+company_senior_level_salary AS (
+    SELECT
+        company_id,
+        company_name,
+        MIN(salary_year_avg) AS min_salary,
+        MAX(salary_year_avg) AS max_salary
+    FROM
+        senior_level_jobs
+    GROUP BY
+        company_id,
+        company_name
+)
+SELECT
+    e.company_id,
+    e.company_name,
+    e.min_salary AS min_senior_salary,
+    e.max_salary AS max_senior_salary,
+    elj_min.job_title AS min_senior_salary_job_title,
+    elj_max.job_title AS max_senior_salary_job_title
+FROM
+    company_senior_level_salary e
+JOIN
+    senior_level_jobs elj_min ON e.company_id = elj_min.company_id AND e.min_salary = elj_min.salary_year_avg
+JOIN
+    senior_level_jobs elj_max ON e.company_id = elj_max.company_id AND e.max_salary = elj_max.salary_year_avg
+ORDER BY
+    e.company_id;
+-- no changes

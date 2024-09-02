@@ -1,0 +1,34 @@
+WITH skill_salaries AS (
+    SELECT
+        sd.skill_id,
+        sd.skills,
+        jp.salary_year_avg
+    FROM
+        job_postings_fact jp
+    JOIN
+        skills_job_dim sjd ON jp.job_id = sjd.job_id
+    JOIN
+        skills_dim sd ON sjd.skill_id = sd.skill_id
+    WHERE
+        jp.salary_year_avg IS NOT NULL
+),
+skill_counts AS (
+    SELECT
+        skills,
+        COUNT(*) AS job_count,
+        AVG(salary_year_avg) AS average_salary
+    FROM
+        skill_salaries
+    GROUP BY
+        skills
+)
+SELECT
+    skills,
+    job_count,
+    average_salary
+FROM
+    skill_counts
+ORDER BY
+    average_salary DESC,
+    job_count DESC
+LIMIT 20;

@@ -1,0 +1,23 @@
+WITH skills_count AS (
+    SELECT
+        sjd.skill_id,
+        COUNT(*) AS demand_count
+    FROM
+        skills_job_dim sjd
+    JOIN
+        job_postings_fact jpf ON sjd.job_id = jpf.job_id
+    WHERE
+        jpf.job_work_from_home IS NOT NULL -- assuming jobs listed here are the ones actively seeking hires
+    GROUP BY
+        sjd.skill_id
+)
+SELECT
+    sd.skills,
+    sc.demand_count
+FROM
+    skills_count sc
+JOIN
+    skills_dim sd ON sc.skill_id = sd.skill_id
+ORDER BY
+    sc.demand_count DESC
+LIMIT 20;

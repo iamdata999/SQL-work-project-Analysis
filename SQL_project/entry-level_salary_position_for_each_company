@@ -1,0 +1,40 @@
+WITH entry_level_jobs AS (
+    SELECT
+        c.company_id,
+        c.name AS company_name,
+        j.job_id,
+        j.job_title,
+        j.salary_year_avg
+    FROM
+        company_dim c
+    JOIN
+        job_postings_fact j ON c.company_id = j.company_id
+    WHERE
+        j.job_title ILIKE '%Junior%' 
+        OR j.job_title ILIKE '%Entry Level%' 
+        OR j.job_title ILIKE '%Intern%'
+        AND j.salary_year_avg IS NOT NULL
+),
+company_entry_level_salary AS (
+    SELECT
+        company_id,
+        company_name,
+        MIN(salary_year_avg) AS min_salary
+    FROM
+        entry_level_jobs
+    GROUP BY
+        company_id,
+        company_name
+)
+SELECT
+    e.company_id,
+    e.company_name,
+    e.min_salary,
+    elj.job_title
+FROM
+    company_entry_level_salary e
+JOIN
+    entry_level_jobs elj ON e.company_id = elj.company_id AND e.min_salary = elj.salary_year_avg
+ORDER BY
+    e.company_id;
+-- no changes

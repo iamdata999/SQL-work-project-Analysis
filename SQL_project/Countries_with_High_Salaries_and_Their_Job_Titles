@@ -1,0 +1,13 @@
+SELECT
+    job_country,
+    job_title_short,
+    AVG(salary_year_avg) AS avg_salary
+FROM
+    job_postings_fact
+WHERE
+    salary_year_avg IS NOT NULL -- Ensure only postings with specified salaries are included
+GROUP BY
+    job_country, job_title_short
+ORDER BY
+    avg_salary DESC
+LIMIT 20; -- Adjust the limit as needed to get the top N results
