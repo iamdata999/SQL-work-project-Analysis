@@ -1,0 +1,7 @@
+SELECT
+    job_id,
+    skill_id
+FROM
+    skills_job_dim
+ORDER BY
+    skill_id

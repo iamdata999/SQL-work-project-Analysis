@@ -1,0 +1,11 @@
+SELECT
+company_id,
+name,
+link,
+link_google,
+thumbnail
+FROM
+company_dim
+ORDER BY
+link_google
+

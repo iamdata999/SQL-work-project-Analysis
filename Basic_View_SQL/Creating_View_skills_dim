@@ -1,0 +1,8 @@
+SELECT
+     skill_id,
+     skills,
+     type
+FROM
+    skills_dim
+ORDER BY
+    skills
