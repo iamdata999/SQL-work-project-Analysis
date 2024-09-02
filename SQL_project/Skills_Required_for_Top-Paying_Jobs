@@ -1,0 +1,28 @@
+WITH top_paying_jobs AS (
+    SELECT
+        job_id,
+        job_title_short,
+        salary_year_avg
+    FROM
+        job_postings_fact
+    WHERE
+        salary_year_avg IS NOT NULL
+    ORDER BY
+        salary_year_avg DESC
+    LIMIT 10 -- Adjust the limit as needed to get the top N highest paying jobs
+)
+SELECT
+    tpj.job_title_short,
+    sd.skills,
+    COUNT(*) AS skill_count
+FROM
+    top_paying_jobs tpj
+JOIN
+    skills_job_dim sjd ON tpj.job_id = sjd.job_id
+JOIN
+    skills_dim sd ON sjd.skill_id = sd.skill_id
+GROUP BY
+    tpj.job_title_short, sd.skills
+ORDER BY
+    skill_count DESC;
+-- no changes
