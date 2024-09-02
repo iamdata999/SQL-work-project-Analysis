@@ -1,0 +1,48 @@
+-- CTE for counting unique skills per company
+WITH unique_skills_per_company AS (
+    SELECT 
+        c.company_id,
+        COUNT(DISTINCT sj.skill_id) AS unique_skill_count
+    FROM 
+        company_dim c
+    LEFT JOIN 
+        job_postings_fact j ON c.company_id = j.company_id
+    LEFT JOIN 
+        skills_job_dim sj ON j.job_id = sj.job_id
+    GROUP BY 
+        c.company_id
+),
+
+-- CTE for calculating highest average salary per company
+highest_avg_salary_per_company AS (
+    SELECT 
+        c.company_id,
+        MAX(j.salary_year_avg) AS highest_avg_salary
+    FROM 
+        company_dim c
+    LEFT JOIN 
+        job_postings_fact j ON c.company_id = j.company_id
+    LEFT JOIN 
+        skills_job_dim sj ON j.job_id = sj.job_id
+    WHERE 
+        j.salary_year_avg IS NOT NULL
+    GROUP BY 
+        c.company_id
+)
+
+-- Main query combining the results
+SELECT 
+    c.company_id,
+    c.name,
+    COALESCE(us.unique_skill_count, 0) AS unique_skill_count,
+    h.highest_avg_salary
+FROM 
+    company_dim c
+LEFT JOIN 
+    unique_skills_per_company us ON c.company_id = us.company_id
+LEFT JOIN 
+    highest_avg_salary_per_company h ON c.company_id = h.company_id
+ORDER BY 
+    unique_skill_count DESC, 
+    highest_avg_salary DESC;
+    -- updated

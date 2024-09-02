@@ -1,0 +1,24 @@
+SELECT
+c.company_id,
+c.name AS company_name,
+company_avg.avg_salary
+FROM
+company_dim c
+JOIN
+(SELECT
+company_id,
+AVG(salary_year_avg) AS avg_salary
+FROM
+job_postings_fact
+GROUP BY
+company_id) AS company_avg ON c.company_id = company_avg.company_id
+WHERE
+company_avg.avg_salary > (
+SELECT
+AVG(salary_year_avg)
+FROM
+job_postings_fact
+)
+ORDER BY
+company_avg.avg_salary DESC;
+-- updated
