@@ -1,0 +1,7 @@
+SELECT
+skill_id,
+skills
+FROM
+skills_dim
+WHERE
+type IS NULL;
